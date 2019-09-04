@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <script type="text/javascript" src="./js/vector.js"></script>
+    <link rel="stylesheet" href="./css/version.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="./js/version_3.js"></script>
+
+  </head>
+  <style>
+  body{background-image:url(./photo/background.jpg);
+  background-repeat: no-repeat;
+  background-size: 1900px 1080px;
+position: fixed;}
+</style>
+  <title>ChatBot</title>
+  <body>
+    <div id="shelf">
+    <div id="output">
+    <div class="chatBox">
+        <!--返回框-->
+
+        <div class = "top_bar">
+          <img src="./photo/backicon.png" id="backicon" alt="backicon" width="28.5px" height="28.5px"/>
+          <img src="./photo/menu_top.png" id="menu_top" alt="menu_top" width="38.5px" height="9.5px"/>
+        </div>
+
+        <!-- 聊天记录区域-->
+      <ul class="container" id="parentUl">
+      </ul>
+
+     <!--提示框-->
+     <div class="prompotBar">
+       <button class="ui-btn ui-btn-inline ui-corner-all"id="equipment" onclick="equipment()">Matériel</button>
+       <div class="dropdown">
+         <button class="dropbtn" id="symptom" onclick="symptom()">Symptôme</button>
+         <div class="dropdown-content">
+           <a onclick="clickSymptom(this.innerHTML)">ALARME</a>
+           <a onclick="clickSymptom(this.innerHTML)">ALERTE</a>
+           <a onclick="clickSymptom(this.innerHTML)">BLOCAGE</a>
+           <a onclick="clickSymptom(this.innerHTML)">BRUIT-ANORMAL</a>
+           <a onclick="clickSymptom(this.innerHTML)">CONNEXION</a>
+           <a onclick="clickSymptom(this.innerHTML)">COUPURE-ELECTRIQUE</a>
+           <a onclick="clickSymptom(this.innerHTML)">DEBIT</a>
+           <a onclick="clickSymptom(this.innerHTML)">NE-DEMARRE-PAS</a>
+           <a onclick="clickSymptom(this.innerHTML)">ERREUR</a>
+           <a onclick="clickSymptom(this.innerHTML)">FUITE</a>
+           <a onclick="clickSymptom(this.innerHTML)">FUMEE</a>
+           <a onclick="clickSymptom(this.innerHTML)">ASPIRATION</a>
+           <a onclick="clickSymptom(this.innerHTML)">LEVEE</a>
+           <a onclick="clickSymptom(this.innerHTML)">PURGE</a>
+           <a onclick="clickSymptom(this.innerHTML)">SECURITE</a>
+           <a onclick="clickSymptom(this.innerHTML)">TEMP-ELEVEE</a>
+           <a onclick="clickSymptom(this.innerHTML)">VANDALISME</a>
+         </div>
+       </div>
+       <button class="ui-btn ui-btn-inline ui-corner-all"id="priority" onclick="priority()">Priorité</button>
+       <button class="ui-btn ui-btn-inline ui-corner-all"id="location" onclick="location()">Localisation</button>
+     </div>
+     <!-- 输入 -->
+     <div class="sendBox">
+         <img src="./photo/microphone.png" onclick="funNoCreated()" id="mircophone" width="6%" height="72%" />
+        <!--<a href="#" class="ui-btn ui-corner-all ui-icon-audio ui-btn-icon-notext" id = "microphone" ></a> style="display: none;position: absolute;top:2px;left: 97%;font-size: 25px;" -->
+         <input data-wrapper-class="msg" type="text" id="msg" placeholder="Ecrivez votre message..." onkeypress="if(event.keyCode==13){httpMsg()}" />
+         <img src="./photo/camera.png" onclick="funNoCreated()" id="camera" width="6%" height="72%"/>
+         <img src="./photo/menu_plus.png" onclick="funNoCreated()" id ="menu_plus" width="5%" height="60%"/>
+     </div>
+   </div>
+   </div>
+   </div>
+   <div id="choiceWindow">
+     <label id="x" onclick="iconX()"style="position: absolute;top:2px;left: 97%;font-size: 25px;">x</label>
+     <img src="./photo/cry.jpg" style="margin:15% 7.5% 15% 7.5%;" width="85%" height="30%"/>
+   </div>
+   <div id="backGround"></div>
+
+
+   <div id="boxDisplay">
+     <div id="googleMap">
+        <label id="xx" onclick="iconXMap()" style="color:#fff;position: absolute;top:2px;left: 97%;font-size: 2em;">x</label>
+        <div id="map"></div>
+        <div id="mapSeek"style="padding:5px;">
+            <button class="ui-btn ui-btn-inline ui-corner-all" style="margin:0 auto;"onclick="pageObj.fn.getPosition()">Actuel Positionnement</button>
+            <input type="text" placeholder="Ecrivez votre adresse..." id="txtAutoCompute" oninput="pageObj.fn.AutocompleteSearch()" />
+            <ul class="serachAddress" id="autoSearchPlace">
+            </ul>
+        </div>
+      </div>
+    </div>
+    <div id="backGroundMap"></div>
+ </body>
+ <script>
+
+ window.onclick = function(event) {
+   if (!event.target.matches('.dropbtn')) {
+
+     var dropdowns = document.getElementsByClassName("dropdown-content");
+     var i;
+     for (i = 0; i < dropdowns.length; i++) {
+       var openDropdown = dropdowns[i];
+       if (openDropdown.classList.contains('show')) {
+         openDropdown.classList.remove('show');
+       }
+     }
+   }
+ }
+/*
+ $(function(){
+   var victor = new Victor("shelf", "output");
+   victor(["#ac0908","#cd5726"]).set();
+ });*/
+
+ $(document).ready(function(){
+   $('#parentUl').append('<li class="robot">'+'<p class ="loader">' +'</p>'+'</li>');
+   setTimeout( function(){
+         $('.loader').hide();
+         $('#parentUl').append('<li class="robot">'+'<img class="robotIcon" src="./photo/icon1.png">'+'<p class="robotText">Bonjour! Je suis CARLBot, quel est votre problème? </p>'+'</li>');
+         $('#parentUl')[0].scrollTop = $('#parentUl')[0].scrollHeight;
+       } ,1000);
+   $('#msg').bind('input propertychange', function() {
+     $('#menu_plus').remove();
+     $('div.sendBox').append('<img src="./photo/send.png" id ="sendMsg" width="4.5%" height="60%" onclick="httpMsg()" /> '); /*('<a id="send" href="javascript:void(0);" onclick="httpMsg()" >Send</a>');*/
+   });
+ });
+
+     //地址搜索匹配可能結果（列表）
+     var autocompleteService;
+     //地址模糊匹配地理界限範圍
+     var bounds;
+     //地區消息
+     var infowindow;
+     //地址id解析器
+     var geocoder;
+     //定位標記
+     var goDoorMarker;
+     var posiontShow = 30;
+
+     var pageObj = {
+
+         fn: {
+             //地址輸入搜索可能結果匹配（結果為列表）
+             AutocompleteSearch: function () {
+                 var address = document.getElementById('txtAutoCompute').value;
+                 console.log(address);
+                 if (address == "") {
+                     return;
+                 }
+                 document.getElementById("autoSearchPlace").innerHTML = "En cours de chercher...";
+                 function displaySuggestions(predictions, status) {
+                     if (status != google.maps.places.PlacesServiceStatus.OK) {
+                         console.log(status);
+                         return;
+                     }
+                     searchArr = predictions;
+                     console.log(predictions);
+                     var htmlArr = new Array();
+                     predictions.forEach(function (prediction) {
+                         var html = '<li placeId="' + prediction.place_id + '" >' +
+                             '<div class="tit">' + prediction.structured_formatting.main_text + '</div>' +
+                             '<div class="txt">' + prediction.description + '</div>' +
+                             '</li>';
+                         htmlArr.push(html);
+                         /*var result_mark = new google.maps.Marker({ position:  });
+                         result_mark.setMap(map);
+                         map.panTo(prediction);*/
+                     });
+                     document.getElementById("autoSearchPlace").innerHTML = htmlArr.join('');
+                 };
+                 var request = {
+                     //地址模糊匹配地理界限範圍
+                     //如果定位成功，則首選匹配查詢結果在此城市中
+                     bounds: bounds,
+                     input: address,
+                     //types: ['geocode']
+                 }
+                 autocompleteService.getPlacePredictions(request, displaySuggestions);
+                 //autocompleteService.getQueryPredictions(request, displaySuggestions);
+             }
+             //獲取當前位置定位
+             , getPosition: function () {
+                 if (!navigator.geolocation) {
+                     alert("Cannot support html5 postioning");
+                     return;
+                 }
+                 var options =
+                     {
+                         enableHighAccuracy: true,//高精度定位
+                         timeout: 3000,//毫秒，超時時間,超時后調用error
+                         maximumAge: 0
+                     };
+                 navigator.geolocation.getCurrentPosition(function (position) {
+                     console.log('當前定位：');
+                     console.log(position);
+                     var geolocation = {
+                         lat: position.coords.latitude,
+                         lng: position.coords.longitude
+                     };
+                     var circle = new google.maps.Circle({
+                         center: geolocation,
+                         radius: position.coords.accuracy
+                     });
+                     //pageObj.fn.goMapToByPlaceId(position.placeId);
+                     //設置查詢地圖範圍界限
+                     bounds = circle.getBounds();
+                     //console.log(circle);
+                     console.log("定位設置成功");
+                     //pageObj.fn.alertMsg("定位設置成功");
+                     pageObj.fn.getCityName(geolocation);
+                 }, function (error) {
+                     //处理错误
+                     switch (error.code) {
+                         case 1:
+                             console.log("Location service rejected");
+                             pageObj.fn.alertMsg("Location service rejected!");
+                             break;
+                         case 2:
+                             console.log("Temporarily unable to get location information!");
+                             pageObj.fn.alertMsg("Temporarily unable to get location information!");
+                             break;
+                         case 3:
+                             console.log("Time out!");
+                             pageObj.fn.alertMsg("Time out!");
+                             break;
+                         default:
+                             console.log("unknown error");
+                             pageObj.fn.alertMsg("unknown Error!");
+                             break;
+                     }
+                 }, options);
+             }
+             //根據地址id轉換為地圖坐標
+             , goMapToByPlaceId: function (placeId) {
+                 geocoder.geocode({ 'placeId': placeId }, function (results, status) {
+                     if (status === 'OK') {
+                         var resultPosition = results[0];
+                         console.log("定位地址：");
+                         console.log(resultPosition);
+                         if (resultPosition) {
+                             map.setCenter(resultPosition.geometry.location);
+                             goDoorMarker = new google.maps.Marker({
+                                 map: map,
+                                 position: resultPosition.geometry.location
+                             });
+                             goDoorMarker.address = resultPosition.formatted_address;
+                             pageObj.fn.showMapInfo(resultPosition.formatted_address, goDoorMarker);
+
+                         } else {
+                             pageObj.fn.alertMsg(pageObj.words.noResult);
+                         }
+                     } else {
+                         pageObj.fn.alertMsg(status);
+                     }
+                 });
+             }
+             //根據經緯度坐標得到城市名稱
+             , getCityName: function (latlng) {
+                 geocoder.geocode({ 'location': latlng }, function (results, status) {
+                     if (status === 'OK') {
+                         console.log(results);
+                         //獲取區縣名稱，匹配數據找出區縣id
+                         var quxian = results.find(w => w.types.filter(x => x == "sublocality_level_1").length > 0);
+                         if (quxian != undefined) {
+                             var quxianObj = quxian.address_components.find(w => w.types.filter(x => x == "sublocality_level_1").length > 0);
+                             if (quxianObj != undefined && quxianObj != null) {
+                                 console.log("匹配到的區縣名稱=" + quxianObj.short_name);
+                             }
+                         }
+                         var firstResult = results[0];
+                         var name = '<li placeId="' +firstResult.place_id + '" >' +
+                             '<div class="tit">' +  firstResult.formatted_address+'</div>' +
+                             '<div class="txt">' + firstResult.formatted_address + '</div>'
+                             '</li>';
+                        $("#autoSearchPlace").html(name);
+                         console.log("定位地址：");
+                         console.log(firstResult);
+                         //顯示定位標記
+                         goDoorMarker = new google.maps.Marker({
+                             map: map,
+                             position: latlng
+                         });
+                         map.panTo(latlng);
+                         goDoorMarker.address = firstResult.formatted_address;
+                         pageObj.fn.showMapInfo(firstResult.formatted_address, goDoorMarker);
+
+
+                     } else {
+                         pageObj.fn.alertMsg(pageObj.words.latLngDecodeError + status);
+                     }
+                 });
+             }
+             //顯示白色消息框到地圖
+             , showMapInfo: function (msg, marker) {
+                 infowindow.setContent(msg);
+                 if (marker != null && marker != undefined) {
+                     infowindow.open(map, marker);
+                 } else {
+                     infowindow.open(map);
+                 }
+             }
+             //彈消息框自動消失
+             , alertMsg: function (msg) {
+                 posiontShow = posiontShow + 5;
+                 if (posiontShow > 60) {
+                     posiontShow = 30;
+                 }
+                 var id = Math.round(Math.random() * 100000000);
+                 var arrS = new Array();
+                 arrS.push('<div id="' + id + '" style="position:fixed;z-index:2000;top:' + posiontShow + '%;width:100%;text-align:center;">');
+                 arrS.push('<div class="msgDiv">');
+                 arrS.push(msg);
+                 arrS.push('</div></div>');
+                 //document.getElementsByTagName("body")[0].innerHTML += arrS.join("");
+                 var msgDom = document.createElement("div");
+                 msgDom.innerHTML = arrS.join("");
+                 document.getElementsByTagName("body")[0].appendChild(msgDom);
+                 setTimeout(function () {
+                     var dom = document.getElementById(id);
+                     dom.parentNode.removeChild(dom);
+                 }, 2000);
+             }
+             //fn結束
+         }
+
+         //pageObj 結束
+     };
+
+     function initMap() {
+         map = new google.maps.Map(document.getElementById('map'), {
+             center: new google.maps.LatLng(45.767, 4.844),
+             zoom: 12,
+             mapTypeId: google.maps.MapTypeId.ROADMAP,
+             mapTypeControl: false,
+             scaleControl: false,
+             streetViewControl: false,
+             zoomControl: false,
+             fullscreenControl: false
+         });
+         infowindow = new google.maps.InfoWindow;
+         //地址id轉換為坐標
+         geocoder = new google.maps.Geocoder;
+         //地址搜索匹配多個結果
+         autocompleteService = new google.maps.places.AutocompleteService();
+         pageObj.fn.getPosition();
+     }
+
+     $("#autoSearchPlace").on("click","li",function(){
+       var NameLocation= $(this).find(".tit").html();
+       //alert($(this).attr("placeid"));
+       setTimeout( function(){
+         $("#codeLocation").hide();
+         $("#iconLocation").after('<code id="nameLocation" style="font-size:0.7em; max-width:40%;padding:1px;">'+NameLocation+'</code>');
+         $("#nameLocation").after('<button class="ui-btn ui-btn-inline ui-corner-all" id="deleteLocation"  style="padding:0;margin-left:3px;color:#808080;" onclick="deleteLocation()">'+"X"+'</button>');
+         $("#boxDisplay").hide();
+         $("#backGroundMap").hide();
+       },1500);
+       geocoder = new google.maps.Geocoder;
+       geocoder.geocode({ 'placeId': $(this).attr("placeid") }, function (results, status) {
+           if (status === 'OK') {
+               var resultPosition = results[0];
+               console.log(resultPosition.geometry.viewport);
+               console.log("定位地址：");
+               console.log(resultPosition);
+               console.log(resultPosition.geometry.viewport);
+               $("#iconLocation").after('<code id="latitude">'+resultPosition.geometry.viewport.da.g+'</code>');
+               $("#iconLocation").after('<code id="longitude">'+resultPosition.geometry.viewport.ha.g+'</code>');
+               if (resultPosition) {
+                  //$("#latitude").after('<code id="longitude" style="visibility:hidden;font-size:0.0001em">'+"nimade"+'</code>');
+                   map.setCenter(resultPosition.geometry.location);
+                   Marker = new google.maps.Marker({
+                       map: map,
+                       position: resultPosition.geometry.location
+                   });
+                   Marker.address = resultPosition.formatted_address;
+                   pageObj.fn.showMapInfo(resultPosition.formatted_address, Marker);
+               } else {
+                   pageObj.fn.alertMsg(pageObj.words.noResult);
+               }
+           } else {
+               pageObj.fn.alertMsg(status);
+           }
+       });
+     });
+  /*   setTimeout( function(){
+       $("#iconLocation").after('<code contenteditable = "true">'+$(this).find(".tit").html()+'</code>');
+       '<code contenteditable = "true">'+$("#priority").html()+'</code>'+
+     },1500);*/
+ </script>
+ <script src="http://maps.google.cn/maps/api/js?key=AIzaSyAcUbZlPh6ccA-zwtw_qHQnVGFoGY8z34M&libraries=places&callback=initMap" async defer></script>
+
+</html>
