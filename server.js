@@ -10,7 +10,7 @@ const AssistantV1 = require('ibm-watson/assistant/v1');
 const service = new AssistantV1({
   version: '2019-02-28',
   username: "apikey",
-  password: 'Rl_jKQLL-RHUatQmnQKVFz7gKFRD11cNjoSszVEPd5Ma',
+  password: '',
   url: 'https://gateway-lon.watsonplatform.net/assistant/api'
 });
 
@@ -23,7 +23,7 @@ const auth = "Basic " + new Buffer.from(username + ":" + password).toString("bas
     app.post('/sendMsg',function(req,res,err){
     console.log("Msg: "+req.body.jsonDatas);
     service.message({
-      workspace_id: '5d3caf46-9290-4047-b7bb-cb4c1969ee9a',
+      workspace_id: '',
       input: {'text': req.body.jsonDatas}
     })
       .then(response => {
