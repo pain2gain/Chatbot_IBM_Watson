@@ -119,7 +119,8 @@ URL depens on your region:
 ```
 
 Example for calling the api of Watson:
-```
+
+```js
     const AssistantV1 = require('ibm-watson/assistant/v1');
     
     const service = new AssistantV1({
@@ -153,7 +154,8 @@ The JSON response from the chatbot engine:
 
 <h2>CARL Source</h2>
 Here is the example for sending the resquest of intervention.
-```
+
+```js
 var request = require('request'); // request sdk
 var json = {                      // the json will be sent to CARL Source system  
         data: {
