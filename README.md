@@ -95,12 +95,14 @@ Example:
 
 Watson assistant has the management of flow dialogue which helps us to manage the sequence of the conversations.
 Nodes present the rounds of dialogue. 
+
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_dialogue_flow.jpg)
 
 
 After defining the order of nodes conversation, we should initialize all of them. Like the following picture, if the assistant recognizes the intent of #intent_DI,
 then it will check the entities in the user's description. We can also choose the entity is  optional or not, and according to it's type we can define somme response to make our dialogue more flexible.
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_dialogue_response.jpg)
+
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_dialogue_response.JPG)
 
 
 <h2>Watson API</h2>
@@ -129,8 +131,11 @@ Now the IBM watson has 2 versions API, the V1 is used by the system.
 URL:'https://gateway-lon.watsonplatform.net/assistant/api'
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
+
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
+
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
+
 
 <h2>CARL Source</h2>
 Here is the example for sending the resquest of intervention.
