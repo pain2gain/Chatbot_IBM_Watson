@@ -7,7 +7,7 @@ The program is a Chatbot project based on the engine of [IBM Watson Assistant](h
 It just has a French version, but the engine of IBM Watson supports many [languages](https://cloud.ibm.com/docs/services/assistant?topic=assistant-language-support).
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/architeture.png)
 
-The below blue frame including chatbot is my task during the internship.
+The frame diagram shows us the overview of the system.
 
 <h2>Dependencies</h2>
 
@@ -16,7 +16,7 @@ The below blue frame including chatbot is my task during the internship.
 3. Node-SDK Express `npm install express`
 
 <h2>Explanation</h2> 
-First of all, it's necessary to explain the `relations` between every part for the Frame diagram:
+First of all, it's necessary to explain the `relations` between every part for the frame diagram:
 
 <h4>*User & GUI</h4>
 
@@ -53,12 +53,27 @@ With the id of equipment, to add the equipment information to the request alread
 Manually, we downloaded the data from CARL Source to get the entities of 'Equipement', 'Localisation', 'TypeEQPT', 'Marque', 'Symptômr', 'Modèle' and process these data.
 
 <h2>Watson</h2>
-[Watson API](https://cloud.ibm.com/apidocs/assistant)
+With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
+```js
+    const AssistantV1 = require('ibm-watson/assistant/v1');
+    
+    const service = new AssistantV1({
+      version: '2019-02-28',
+      iam_apikey: '{apikey}',
+      url: '{url}'
+    });
+    
+    service.message({
+      workspace_id: '{workspace_id}',
+      input: {'text': 'Hello'}
+      })
+      .then(res => {
+        console.log(JSON.stringify(res, null, 2));
+      })
+      .catch(err => {
+        console.log(err)
+      });
+```
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
+<h2>
 
-
-
-
-
-~~~~ 消除线
-
-__  斜体
