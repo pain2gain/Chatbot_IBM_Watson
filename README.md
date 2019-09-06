@@ -18,8 +18,6 @@ The frame diagram shows us the overview of the system.
 3. The same for SDK Express `npm install express` in CMD.
 
 
-<h4>Server environment:</h4>
-
 
 <h4>Download code:</h4>
 
@@ -43,7 +41,7 @@ To finish your connection with the chatbot, you have to open the `server.js` to 
 
 <h2>Tips</h2>
 
-The demo is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
+The demo chatbot is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
 
 <h2>Explanation</h2> 
 First of all, it's necessary to explain the relations between every part for the frame diagram:
