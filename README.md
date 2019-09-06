@@ -18,29 +18,35 @@ The below blue frame including chatbot is my task during the internship.
 <h2>Explanation</h2> 
 First of all, it's necessary to explain the `relations` between every part for the Frame diagram:
 
-***User & GUI**
+<h4>*User & GUI</h4>
 
 With the natural language, user can realise an friendly interaction with the GUI.
 
-***GUI & Backend**
+<h4>*GUI & Backend</h4>
 
 With the [Ajax HTTP Request](https://api.jquery.com/jquery.ajax/), the GUI can send user's description to Chatbot. In the case of the asynchronous request, GUI will get the response of Chatbot engine.
 
-***Backend & Chatbot**
+<h4>*Backend & Chatbot</h4>
 
 With the API of IBM Watson, backend sends the description of the production problem to chatbot engine for getting the processing result.
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
 
-***Backend & CARL Source**
+<h4>*Backend & CARL Source</h4>
 
 With the REST API of CARL Source, backend will get the details of the equipment and send the request to CARL Source.
 Now here the REST api we get from the CS:
 
-With code of equipment, to get more details. `http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50`
+With code of equipment, to get more details. 
 
-With all entities found, to send the request of intervention. `http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr`
+`http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50`
 
-With the id of equipment, to add the equipment information to the request already existing. `http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt`
+With all entities found, to send the request of intervention. 
+
+`http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr`
+
+With the id of equipment, to add the equipment information to the request already existing. 
+
+`http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt`
 
 ***CARL Source & Chatbot**
 
