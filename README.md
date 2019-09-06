@@ -4,7 +4,7 @@
 <h2>Introduction</h2>
 
 The program is a Chatbot project based on the engine of [IBM Watson Assistant](https://www.ibm.com/cloud/watson-assistant/). It is a simple demo of my internship at [CARL Software](https://www.carl-software.fr/) for six months.
-It just has a French version, but the engine of IBM Watson supports many [languages](https://cloud.ibm.com/docs/services/assistant?topic=assistant-language-support).
+It just has a French version, but the engine of IBM Watson supports many [languages](https://cloud.ibm.com/docs/services/assistant?topic=assistant-language-support). The system depends also on the CARL Source for getting the entities and sending the request of intervention.
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/architeture.png)
 
 The frame diagram shows us the overview of the system.
@@ -15,7 +15,9 @@ The frame diagram shows us the overview of the system.
 2. Node-SDK IBM Watson `npm install ibm-watson`
 3. Node-SDK Express `npm install express`
 
-<h2></h2>
+<h2>To use</h2>
+
+`node server.js`
 
 <h2>Explanation</h2> 
 First of all, it's necessary to explain the relations between every part for the frame diagram:
@@ -49,7 +51,7 @@ Now here the REST api we get from the CS:
 
     `http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt`
 
-<h4>*CARL Source & Chatbot</h4>
+* <h4>CARL Source & Chatbot</h4>
 
 Manually, we downloaded the data from CARL Source to get the entities of 'Equipement', 'Localisation', 'TypeEQPT', 'Marque', 'Symptômr', 'Modèle' and process these data.
 
@@ -106,15 +108,22 @@ then it will check the entities in the user's description. We can also choose th
 
 
 <h2>Watson API</h2>
+
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
 Now the IBM watson has 2 versions API, the V1 is used by the system. We need also to find the apikey,workspace_id, and url.
 URL depens on your region:
+
 ```
  Dallas: https://gateway.watsonplatform.net/assistant/api
+ 
  Washington, DC: https://gateway-wdc.watsonplatform.net/assistant/api
+ 
  Frankfurt: https://gateway-fra.watsonplatform.net/assistant/api
+ 
  Sydney: https://gateway-syd.watsonplatform.net/assistant/api
+ 
  Tokyo: https://gateway-tok.watsonplatform.net/assistant/api
+ 
  London: https://gateway-lon.watsonplatform.net/assistant/api
 ```
 
