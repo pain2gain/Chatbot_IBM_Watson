@@ -4,7 +4,7 @@
 **About** 
 
 The program is a Chatbot project based on the engine of IBM Watson Assistant. It is a simple demo of my internship at CARL Software for six months. 
-![image](https://github.com/TouchDreamRen/PersonalPage/raw/master/screenshots/screenshot.png)
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/Images/Architeture.png)
 
 **Dependencies** 
 1. Node.js v10.15.3 
