@@ -60,6 +60,8 @@ URL depends on your region:
 
 `node server.js`
 
+In your browser, enter `localhost:3001`
+
 <h2>Tips</h2>
 
 The demo chatbot is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
