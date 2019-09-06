@@ -10,8 +10,11 @@ const AssistantV1 = require('ibm-watson/assistant/v1');
 const service = new AssistantV1({
   version: '2019-02-28',
   username: "apikey",
-  password: '',
-  url: 'https://gateway-lon.watsonplatform.net/assistant/api'
+  /************************************************************************/
+  //Fill your api_key and your url
+  iam_apikey: '#your_api_key',
+  url: '#url_of_your_region '
+  /*************************************************************************/
 });
 
 
@@ -19,11 +22,13 @@ const username ='CARLSOURCE';
 const password = 'admin';
 const auth = "Basic " + new Buffer.from(username + ":" + password).toString("base64");
 
-
     app.post('/sendMsg',function(req,res,err){
     console.log("Msg: "+req.body.jsonDatas);
     service.message({
+      /************************************************************************/
+      //Fill your workplace_id
       workspace_id: '',
+      /************************************************************************/
       input: {'text': req.body.jsonDatas}
     })
       .then(response => {
@@ -38,10 +43,6 @@ const auth = "Basic " + new Buffer.from(username + ":" + password).toString("bas
         console.log(error);
       });
     });
-
-
-/**********************************************************/
-//调用API，根据Equipment, Type，Model，marque,Localisation
 
 
 function findEntity(entity,data){

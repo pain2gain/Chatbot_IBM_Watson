@@ -9,15 +9,41 @@ It just has a French version, but the engine of IBM Watson supports many [langua
 
 The frame diagram shows us the overview of the system.
 
-<h2>Dependencies</h2>
+<h2>Installation</h2>
 
-1. [Node.js](https://nodejs.org/en/) v10.15.3 
-2. Node-SDK IBM Watson `npm install ibm-watson`
-3. Node-SDK Express `npm install express`
+<h4>Server environment:</h4>
 
-<h2>To use</h2>
+1. Download [Node.js](https://nodejs.org/en/) and install Nodejs in your computer environment.
+2. Npm which is the package management system for Node.js has been integrated. So Node-SDK IBM Watson can be downloaded directly with the `npm install ibm-watson` in CMD. 
+3. The same for SDK Express `npm install express` in CMD.
+
+
+<h4>Server environment:</h4>
+
+
+<h4>Download code:</h4>
+
+You can use Git or checkout with SVN using the web URL or download them directly.
+
+
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/download_code.JPG)
+
+<h4>Apikey and workplace_id of IBM Watson:</h4>
+
+To finish your connection with the chatbot, you have to open the `server.js` to fill your `url, apikey,workplace_id` of your account. How to get the apikey and workplace_id from your IBM watson assistant account: 
+
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
+
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
+
+
+<h2>To run</h2>
 
 `node server.js`
+
+<h2>Tips</h2>
+
+The demo is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
 
 <h2>Explanation</h2> 
 First of all, it's necessary to explain the relations between every part for the frame diagram:
@@ -149,12 +175,6 @@ Example for calling the api of Watson:
         console.log(err)
       });
 ```
-
-How to find the apikey from your IBM watson assistant account: 
-
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
-
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
 
 The JSON response from the chatbot engine:
 
