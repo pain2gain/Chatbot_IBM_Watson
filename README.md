@@ -35,6 +35,7 @@ To finish your connection with the chatbot, you have to open the `server.js` to 
 How to get the apikey and workplace_id from your IBM watson assistant account: 
 
 View API details: 
+
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
