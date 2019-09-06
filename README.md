@@ -54,6 +54,7 @@ Manually, we downloaded the data from CARL Source to get the entities of 'Equipe
 
 <h2>Watson</h2>
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
+Now the IBM watson has 2 
 ```js
     const AssistantV1 = require('ibm-watson/assistant/v1');
     
@@ -74,6 +75,6 @@ With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=
         console.log(err)
       });
 ```
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
 <h2>
 
