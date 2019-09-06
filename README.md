@@ -107,7 +107,17 @@ then it will check the entities in the user's description. We can also choose th
 
 <h2>Watson API</h2>
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
-Now the IBM watson has 2 versions API, the V1 is used by the system. 
+Now the IBM watson has 2 versions API, the V1 is used by the system. We need also to find the apikey,workspace_id, and url.
+URL depens on your region:
+```
+ Dallas: https://gateway.watsonplatform.net/assistant/api
+ Washington, DC: https://gateway-wdc.watsonplatform.net/assistant/api
+ Frankfurt: https://gateway-fra.watsonplatform.net/assistant/api
+ Sydney: https://gateway-syd.watsonplatform.net/assistant/api
+ Tokyo: https://gateway-tok.watsonplatform.net/assistant/api
+ London: https://gateway-lon.watsonplatform.net/assistant/api
+```
+Ememple for calling the api of Watson:
 ```js
     const AssistantV1 = require('ibm-watson/assistant/v1');
     
@@ -128,11 +138,14 @@ Now the IBM watson has 2 versions API, the V1 is used by the system.
         console.log(err)
       });
 ```
-URL:'https://gateway-lon.watsonplatform.net/assistant/api'
+
+How to find the apikey from your IBM watson assistant account: 
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
+
+The JSON response from the chatbot engine:
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
 
