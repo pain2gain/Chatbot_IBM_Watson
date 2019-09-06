@@ -57,10 +57,51 @@ Manually, we downloaded the data from CARL Source to get the entities of 'Equipe
 
 * <h4>Entities</h4>
 
+The CSV file format for eneities:
 
+    entity1, value_a, A_synonym_1
+
+    entity1, value_b, B_synonym_1, B_synonym_2
+
+    entity2, value_c, C_synonym_1, C_synonym_2, C_synonym_3
+    
+Example:
+
+    equipement, 01785, Poteau Incendie Emeraude DN100, PI-EMERAUDE-100, Poteau Incendie Emeraude DN100
+    
+    equipement, B1001, Bus Standard 1001, CITELIS-12, Bus Citelis 12, Bus, TRG01010305, TR02010102, IRISBUS
+
+    equipement, CLIM-001, Climatiseur 001, Climatiseur Carrier 50TZ, TRG0101010302, TR01010204, CARRIER
+
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/import_entities.png)
 * <h4>Intent</h4>
-
+The CSV file format for intents:
+```
+    example, intent1
+    
+    example, intent1
+ 
+    example, intent2
+```
+Example:
+```
+    La pompe hydraulique fuit,intent_DI
+    
+    Il y a du bruit anormale sur mon Renault,intent_DI
+    
+    j'ai un problème,intent_DI
+```
 * <h4>Dialogue</h4>
+
+Watson assistant has the management of flow dialogue which helps us to manage the sequence of the conversations.
+Nodes present the rounds of dialogue. 
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_dialogue_flow.jpg)
+
+
+After defining the order of nodes conversation, we should initialize all of them. Like the following picture, if the assistant recognizes the intent of #intent_DI,
+then it will check the entities in the user's description. We can also choose the entity is  optional or not, and according to it's type we can define somme response to make our dialogue more flexible.
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_dialogue_response.jpg)
+
 
 <h2>Watson API</h2>
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
