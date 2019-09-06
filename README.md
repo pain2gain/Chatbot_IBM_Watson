@@ -15,58 +15,68 @@ The frame diagram shows us the overview of the system.
 2. Node-SDK IBM Watson `npm install ibm-watson`
 3. Node-SDK Express `npm install express`
 
-<h2>Explanation</h2> 
-First of all, it's necessary to explain the `relations` between every part for the frame diagram:
+<h2></h2>
 
-<h4>*User & GUI</h4>
+<h2>Explanation</h2> 
+First of all, it's necessary to explain the relations between every part for the frame diagram:
+
+* <h4>User & GUI</h4>
 
 With the natural language, user can realise an friendly interaction with the GUI.
 
-<h4>*GUI & Backend</h4>
+* <h4>GUI & Backend</h4>
 
 With the [Ajax HTTP Request](https://api.jquery.com/jquery.ajax/), the GUI can send user's description to Chatbot. In the case of the asynchronous request, GUI will get the response of Chatbot engine.
 
-<h4>*Backend & Chatbot</h4>
+* <h4>Backend & Chatbot</h4>
 
 With the API of IBM Watson, backend sends the description of the production problem to chatbot engine for getting the processing result.
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
 
-<h4>*Backend & CARL Source</h4>
+* <h4>Backend & CARL Source</h4>
 
 With the REST API of CARL Source, backend will get the details of the equipment and send the request to CARL Source.
 Now here the REST api we get from the CS:
 
-With code of equipment, to get more details. 
+* With code of equipment, to get more details, the uri of CS:
 
-`http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50`
+    `http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50`
 
-With all entities found, to send the request of intervention. 
+* With all entities found, to send the request of intervention, the uri of CS: 
 
-`http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr`
+    `http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr`
 
-With the id of equipment, to add the equipment information to the request already existing. 
+* With the id of equipment, to add the equipment information to the request already existing, the uri of CS: 
 
-`http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt`
+    `http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt`
 
-***CARL Source & Chatbot**
+<h4>*CARL Source & Chatbot</h4>
 
 Manually, we downloaded the data from CARL Source to get the entities of 'Equipement', 'Localisation', 'TypeEQPT', 'Marque', 'Symptômr', 'Modèle' and process these data.
 
-<h2>Watson</h2>
+<h2>Watson Assistant initialisation</h2>
+
+* <h4>Entities</h4>
+
+
+* <h4>Intent</h4>
+
+* <h4>Dialogue</h4>
+
+<h2>Watson API</h2>
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
-Now the IBM watson has 2 
+Now the IBM watson has 2 versions API, the V1 is used by the system. 
 ```js
     const AssistantV1 = require('ibm-watson/assistant/v1');
     
     const service = new AssistantV1({
       version: '2019-02-28',
-      iam_apikey: '{apikey}',
-      url: '{url}'
+      iam_apikey: '{apikey}', //apikey can be found from your ibm account
+      url: '{url}' //url depends on your region
     });
     
     service.message({
-      workspace_id: '{workspace_id}',
-      input: {'text': 'Hello'}
+      workspace_id: '{workspace_id}',// workspace can be found from your ibm account
+      input: {'text': 'Hello'} // the message will be sent to chatbot engine
       })
       .then(res => {
         console.log(JSON.stringify(res, null, 2));
@@ -77,8 +87,42 @@ Now the IBM watson has 2
 ```
 URL:'https://gateway-lon.watsonplatform.net/assistant/api'
 
-
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
-![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.JPG)
-<h2>
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
 
+<h2>CARL Source</h2>
+Here is the example for sending the resquest of intervention.
+```js
+var request = require('request'); // request sdk
+var json = {                      // the json will be sent to CARL Source system  
+        data: {
+            type: "mr",
+            attributes: {
+                description: "description",
+                workPriority: "workPriority",
+                latitude:"latitude",
+                longitude:"longitude"
+            },
+            symptom: {
+                data: {
+                type: "symptom",
+                id:"idSymp"
+                }
+            }
+        }
+    };
+
+   var auth = "Basic " + new Buffer.from("username" + ":" + "password").toString("base64"); 
+   // the authorization is necessary, just your CRL Source username and password can make it passe.
+   
+   var url = "http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr" // the uri to send a request
+   request({
+       url : url,
+       method:'POST',
+       body: json,
+       headers : {"Content-Type":"application/vnd.api+json","Authorization" : auth}
+   },
+   function (error, response, body) {
+   });
+```
