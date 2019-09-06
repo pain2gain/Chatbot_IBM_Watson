@@ -1,7 +1,7 @@
-#A chatbot based on IBM Watson Assistant
+<h1>A chatbot based on IBM Watson Assistant
 
 
-##About 
+<h3>About 
 
 The program is a Chatbot project based on the engine of IBM Watson Assistant. It is a simple demo of my internship at CARL Software for six months.
 It just has a French version, but the engine of IBM Watson   
@@ -11,21 +11,22 @@ The below blue frame including chatbot is what i did during my internship.
 
 First of all, it's necessary to explain the **relations** of every parts:
 
-####User & GUI
+*User & GUI*
 
 With the natural language, user can realise an friendly interaction with the GUI.
 
-####GUI & backend
+*GUI & backend*
 
 With the Ajax HTTP Request, the GUI can send user's description to Chatbot. In the case of the asynchronous request, GUI will get the response of Chatbot engine.
 
 [Link of JQuery.ajax()](https://api.jquery.com/jquery.ajax/)
 
-####backend & chatbot
+*backend & chatbot*
 With the API of IBM Watson, backend sends the description of the production problem to chatbot engine for getting the processing result.
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/response_of_chatbot.png)
 
-####backend & 
+*backend & CARL Source*
+
 ##Dependencies
 
 1. Node.js v10.15.3 
