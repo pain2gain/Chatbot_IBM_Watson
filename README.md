@@ -11,7 +11,7 @@ The below blue frame including chatbot is what i did during my internship.
 
 First of all, it's necessary to explain the **relations** of every parts:
 
-**User & GUI**
+***User & GUI**
 
 With the natural language, user can realise an friendly interaction with the GUI.
 
