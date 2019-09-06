@@ -1,7 +1,7 @@
-<h1>A chatbot based on IBM Watson Assistant
+<h1>A chatbot based on IBM Watson Assistant</h1>
 
 
-<h3>About 
+<h3>About</h3>
 
 The program is a Chatbot project based on the engine of IBM Watson Assistant. It is a simple demo of my internship at CARL Software for six months.
 It just has a French version, but the engine of IBM Watson   
@@ -27,7 +27,7 @@ With the API of IBM Watson, backend sends the description of the production prob
 
 **backend & CARL Source**
 
-<h3>Dependencies
+<h3>Dependencies</h3>
 
 1. Node.js v10.15.3 
 2. Node-SDK IBM Watson `npm install ibm-watson`
