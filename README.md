@@ -75,6 +75,10 @@ Now the IBM watson has 2
         console.log(err)
       });
 ```
+URL:'https://gateway-lon.watsonplatform.net/assistant/api'
+
+
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey1.JPG)
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.JPG)
 <h2>
 
