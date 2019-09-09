@@ -13,7 +13,7 @@ const service = new AssistantV1({
   /************************************************************************/
   //Fill your api_key and your url
   iam_apikey: 'Rl_jKQLL-RHUatQmnQKVFz7gKFRD11cNjoSszVEPd5Ma',
-  url: '#url_of_your_region '
+  url: 'https://gateway-lon.watsonplatform.net/assistant/api'
   /*************************************************************************/
 });
 
@@ -27,7 +27,7 @@ const auth = "Basic " + new Buffer.from(username + ":" + password).toString("bas
     service.message({
       /************************************************************************/
       //Fill your workplace_id
-      workspace_id: '',
+      workspace_id: '5d3caf46-9290-4047-b7bb-cb4c1969ee9a',
       /************************************************************************/
       input: {'text': req.body.jsonDatas}
     })
