@@ -468,22 +468,20 @@ sympText2*/
          height: 35%;
          padding: 20px;
          border: 3px solid #ccc;
-         background-color: white;
+         background-color:#fefefe;
          z-index:2;
          overflow: auto;
      }
 #backGround {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0%;
   left: 0%;
   width: 100%;
   height: 100%;
   background-color: black;
   z-index:1;
-  -moz-opacity: 0.7;
-  opacity:.70;
-  filter: alpha(opacity=70);
+  background: rgba(0, 0, 0, 0.5);
              }
 #x:hover {
   cursor: pointer;
@@ -492,16 +490,14 @@ sympText2*/
 /***************************************************************/
 #backGroundMap {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0%;
   left: 0%;
   width: 100%;
   height: 100%;
   background-color: black;
   z-index:1;
-  -moz-opacity: 0.5;
-  opacity:.5;
-  filter: alpha(opacity=50);
+  background: rgba(0, 0, 0, 0.5);
              }
 #googleMap {
         border:none;
@@ -511,7 +507,7 @@ sympText2*/
          width: 60%;
          height: 70%;
          padding: 4px;
-         background-color: transparent;
+         background-color: transparnt;
          z-index:2;
          overflow: auto;
          display: flex;

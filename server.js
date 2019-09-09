@@ -6,48 +6,50 @@ const app = express();
       app.use(bodyParser.urlencoded({extended: false}));
 
 
+/**
+The function has 2 main functions: To get the message from Front-end and To send the message to cahtbot engine
+We must fill the #your_api_key, #url_of_your_region, #your_workplace_id
+**/
 const AssistantV1 = require('ibm-watson/assistant/v1');
 const service = new AssistantV1({
   version: '2019-02-28',
   username: "apikey",
-  /************************************************************************/
-  //Fill your api_key and your url
-  iam_apikey: '#your_api_key',
-  url: '#url_of_your_region '
-  /*************************************************************************/
+  iam_apikey: '#your_api_key', // fill in your APIKey
+  url: '#url_of_your_region'  // fill in your URL, in France https://gateway-lon.watsonplatform.net/assistant/api
 });
 
-
-const username ='CARLSOURCE';
-const password = 'admin';
-const auth = "Basic " + new Buffer.from(username + ":" + password).toString("base64");
-
-    app.post('/sendMsg',function(req,res,err){
-    console.log("Msg: "+req.body.jsonDatas);
-    service.message({
-      /************************************************************************/
-      //Fill your workplace_id
-      workspace_id: '#your_workplace_id',
-      /************************************************************************/
-      input: {'text': req.body.jsonDatas}
-    })
-      .then(response => {
-        var responseJson = JSON.parse(JSON.stringify(response, null, 2));
-        judgeData(responseJson).then(jsonAll=>{
-          responseJson["data"]=jsonAll;
-          console.log(responseJson);
-          res.json(responseJson);
-        }).catch(error=>{
-          console.log(error);
-        });
-        })
-      .catch(error => {
+app.post('/sendMsg',function(req,res,err){
+  console.log("Msg: "+req.body.jsonDatas);
+  service.message({                       // Send the Msg to the chatbot, according the API of IBM Watson
+  workspace_id: '#your_workplace_id',   // Fill your workplace_id
+  input: {'text': req.body.jsonDatas}
+  }).then(response => {
+      var responseJson = JSON.parse(JSON.stringify(response, null, 2));
+      judgeData(responseJson).then(jsonAll=>{ // Call CARL Source API, then add them into response json of Chatbot engine
+      responseJson["data"]=jsonAll;
+      console.log(responseJson);
+      res.json(responseJson);
+      }).catch(error=>{
         console.log(error);
+        });
+    })
+    .catch(error => {
+      console.log(error);
       });
-    });
+  });
+
 
 
 function findEntity(entity,data){
+  /**
+  According to the response of Chatbot, we search every type of entities
+
+  input:
+      1. entity=> type of entitiy  EX: equipment, model, location....
+      2. data=> the json response from chatbot engine
+  output:
+      1. array containts the code of every entity
+  **/
   var array = new Array();
   for(j=0;j <data.entities.length;j++){
     if(data.entities[j].entity == entity){
@@ -58,9 +60,28 @@ function findEntity(entity,data){
 }
 
 
+/***
+The info necessary for calling the API of CARL Source.
+Authorization:
+    userName = "CARLSOURCE"
+    password = "admin"
+***/
+const username ='CARLSOURCE';
+const password = 'admin';
+const auth = "Basic " + new Buffer.from(username + ":" + password).toString("base64");
+
 
 function callEveryApi(code){
-  var url = "http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50";
+  /**
+  Call CARL Source API with the code of Equipment
+
+  Input:
+      1. code => the code of equipment
+  Output:
+      1. Promise type which can realize the synchronous fucntion
+        if success, return "resolve", if not return "reject"
+  **/
+  var url = "http://csref-rd.carl-intl.fr:8180/xnet/api/ui/v1/search?_limit=50"; // The server is http://csref-rd.carl-intl.fr:8180
   var request = require('request');
   var textCode = {
     types : [
@@ -91,7 +112,17 @@ function callEveryApi(code){
    })
 }
 
+
 async function callApis(array){
+  /**
+  The function is realized for calling the API(with "callEveryApi"), then add them together into equipment json
+
+  Input:
+      1. array=> the array of the code.
+  output:
+      2. jsonAll=> the json file which contains the details of all the equipment
+  **/
+
   let jsonAll = {
     equipment:[],
   };
@@ -105,7 +136,15 @@ async function callApis(array){
 
 
 async function judgeData(data){
-  // (0 symptom)   (1 equipment)  (2 location) (3 eqptType) (4 model) (5 brand) (6 adjectifsPossessifs)
+  /**
+  The function will get every array of entity, and call API,
+  But we can just find the details of equipment with their code because of the CS API
+
+  Input:
+      1. data=> the json response of Chatbot engine
+  Output:
+      1. the return of "callApis" the json which contains the results of CS APIs
+  **/
   var arrayEqpt = findEntity("equipment",data);
   var arrayLocation = findEntity("location",data);
   var arrayType = findEntity("eqptType",data);
@@ -118,8 +157,13 @@ async function judgeData(data){
 }
 
 
-/***********************************************/
-//从前端获取DI的信息，并且发送给CS
+
+
+/**
+The function can receive the necessary entities from Front-end to send the request
+URL: "http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr"
+**/
+
 app.post('/sendDI',function(req,res,err){
   var url = 'http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mr';
   console.log(req.body);
@@ -149,7 +193,6 @@ app.post('/sendDI',function(req,res,err){
   var jsonDI =JSON.stringify(textDI,null, 2);
   console.log(jsonDI);
 
-
   request({
        url : url,
        method:'POST',
@@ -164,15 +207,18 @@ app.post('/sendDI',function(req,res,err){
     }else{
       res.json({error:"error"});
       console.log(error);
-     //console.log(response);
-     console.log("*****************************************************************************");
-     /*console.log(body);*/
    }
    });
 });
 
 
 function addIdEqpt(mrID,idEqpt){
+  /**
+  With the request ID, we can add the equipment information into it.
+  Input:
+      1. mrID=> the request ID
+      2. idEqpt=> the equipment ID
+  **/
   var url = 'http://csref-rd.carl-intl.fr:8180/xnet/api/entities/v1/mreqpt';
   var request = require('request');
   var textJson = {
@@ -199,7 +245,6 @@ function addIdEqpt(mrID,idEqpt){
     }
 }
 var jsonDI =JSON.stringify(textJson,null, 2);
-
   request({
        url : url,
        method:'POST',
@@ -207,15 +252,16 @@ var jsonDI =JSON.stringify(textJson,null, 2);
        headers : {"Content-Type":"application/vnd.api+json","Authorization" : auth}
    },
    function (error, response, body) {
-    if(response&&response.statusCode==200){
-      console.log(" Materiel OK!");
-    }else{
-      console.log("Error - -");
-   }
+     var bodyJson = JSON.parse(body);
+     if(bodyJson.data.id !=null && bodyJson.data.id !=undefined){
+       console.log("Ajout de Materiel, OK!");
+     }else{
+       console.log("Error - -");
+    }
  });
 }
-/*********************************************************/
-//监听3001端口
+
+//listening the port of 3001
 app.listen(3001,()=>{
     console.log("http://localhost:3001");
   })

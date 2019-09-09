@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-    <script type="text/javascript" src="./js/vector.js"></script>
-    <link rel="stylesheet" href="./css/version.css">
+    <!--<script type="text/javascript" src="./js/vector.js"></script>  Red dynamic Background -->
+    <link rel="stylesheet" href="./css/chatbotCss.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
   	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -14,30 +14,29 @@
 
   </head>
   <style>
+  /* Add the background photo */
   body{background-image:url(./photo/background.jpg);
   background-repeat: no-repeat;
   background-size: 1900px 1080px;
-position: fixed;}
+  position: fixed;}
 </style>
   <title>ChatBot</title>
   <body>
-    <div id="shelf">
-    <div id="output">
-    <div class="chatBox">
-        <!--返回框-->
 
+    <div class="chatBox">
         <div class = "top_bar">
           <img src="./photo/backicon.png" id="backicon" alt="backicon" width="28.5px" height="28.5px"/>
           <img src="./photo/menu_top.png" id="menu_top" alt="menu_top" width="38.5px" height="9.5px"/>
         </div>
-
-        <!-- 聊天记录区域-->
+      <!-- The converastion between users and chatbot   -->
       <ul class="container" id="parentUl">
       </ul>
 
-     <!--提示框-->
+     <!--The bar of Matériel, Symptôme, Priorité and Localisation-->
      <div class="prompotBar">
+        <!--The Matériel button-->
        <button class="ui-btn ui-btn-inline ui-corner-all"id="equipment" onclick="equipment()">Matériel</button>
+       <!--The button of Symptôme, with the choices -->
        <div class="dropdown">
          <button class="dropbtn" id="symptom" onclick="symptom()">Symptôme</button>
          <div class="dropdown-content">
@@ -60,27 +59,34 @@ position: fixed;}
            <a onclick="clickSymptom(this.innerHTML)">VANDALISME</a>
          </div>
        </div>
+        <!--The Priorité button-->
        <button class="ui-btn ui-btn-inline ui-corner-all"id="priority" onclick="priority()">Priorité</button>
+         <!--The Localisation button-->
        <button class="ui-btn ui-btn-inline ui-corner-all"id="location" onclick="location()">Localisation</button>
      </div>
-     <!-- 输入 -->
+
+     <!-- Input -->
      <div class="sendBox">
+           <!-- the icon of microphone -->
          <img src="./photo/microphone.png" onclick="funNoCreated()" id="mircophone" width="6%" height="72%" />
-        <!--<a href="#" class="ui-btn ui-corner-all ui-icon-audio ui-btn-icon-notext" id = "microphone" ></a> style="display: none;position: absolute;top:2px;left: 97%;font-size: 25px;" -->
+           <!-- the inputarea  -->
          <input data-wrapper-class="msg" type="text" id="msg" placeholder="Ecrivez votre message..." onkeypress="if(event.keyCode==13){httpMsg()}" />
+           <!-- the icon of camera  -->
          <img src="./photo/camera.png" onclick="funNoCreated()" id="camera" width="6%" height="72%"/>
+           <!-- the icon of menu  -->
          <img src="./photo/menu_plus.png" onclick="funNoCreated()" id ="menu_plus" width="5%" height="60%"/>
      </div>
    </div>
-   </div>
-   </div>
+   <!-- The prompot of "This function is in developpement"-->
+   <div id="backGround">
    <div id="choiceWindow">
      <label id="x" onclick="iconX()"style="position: absolute;top:2px;left: 97%;font-size: 25px;">x</label>
      <img src="./photo/cry.jpg" style="margin:15% 7.5% 15% 7.5%;" width="85%" height="30%"/>
    </div>
-   <div id="backGround"></div>
+   </div>
 
-
+   <!-- The google map-->
+   <div id="backGroundMap">
    <div id="boxDisplay">
      <div id="googleMap">
         <label id="xx" onclick="iconXMap()" style="color:#fff;position: absolute;top:2px;left: 97%;font-size: 2em;">x</label>
@@ -93,7 +99,9 @@ position: fixed;}
         </div>
       </div>
     </div>
-    <div id="backGroundMap"></div>
+    </div>
+
+
  </body>
  <script>
 
@@ -386,10 +394,7 @@ position: fixed;}
            }
        });
      });
-  /*   setTimeout( function(){
-       $("#iconLocation").after('<code contenteditable = "true">'+$(this).find(".tit").html()+'</code>');
-       '<code contenteditable = "true">'+$("#priority").html()+'</code>'+
-     },1500);*/
+
  </script>
  <script src="http://maps.google.cn/maps/api/js?key=AIzaSyAcUbZlPh6ccA-zwtw_qHQnVGFoGY8z34M&libraries=places&callback=initMap" async defer></script>
 
