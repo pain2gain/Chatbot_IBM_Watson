@@ -103,27 +103,16 @@
 
 
  </body>
- <script>
+ <script>/********** JavaScript for the HTML*************/
 
- window.onclick = function(event) {
-   if (!event.target.matches('.dropbtn')) {
-
-     var dropdowns = document.getElementsByClassName("dropdown-content");
-     var i;
-     for (i = 0; i < dropdowns.length; i++) {
-       var openDropdown = dropdowns[i];
-       if (openDropdown.classList.contains('show')) {
-         openDropdown.classList.remove('show');
-       }
-     }
-   }
- }
-/*
+/*  // the dynamic red background
  $(function(){
    var victor = new Victor("shelf", "output");
    victor(["#ac0908","#cd5726"]).set();
  });*/
 
+
+// the Icon menu is replaced by send icon
  $(document).ready(function(){
    $('#parentUl').append('<li class="robot">'+'<p class ="loader">' +'</p>'+'</li>');
    setTimeout( function(){
@@ -137,7 +126,7 @@
    });
  });
 
-     //地址搜索匹配可能結果（列表）
+     // list of address found 地址搜索匹配可能結果（列表）
      var autocompleteService;
      //地址模糊匹配地理界限範圍
      var bounds;
