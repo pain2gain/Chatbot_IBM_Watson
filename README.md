@@ -58,13 +58,21 @@ URL depends on your region:
 
 <h2>To run</h2>
 
-`node server.js`
+* In CMD of your computer, get into the file which has these code: 
 
-In your browser, enter `localhost:3001`
+    Enter `node server.js`
+
+* In your browser, 
+
+    Enter `localhost:3001`
+
 
 <h2>Tips</h2>
 
-The demo chatbot is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
+* The demo chatbot is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
+
+* The computer which will run the application must has the rights to call the API of CARL Source. If not it has always "Error".
+
 
 <h2>Explanation</h2> 
 First of all, it's necessary to explain the relations between every part for the frame diagram:
@@ -188,7 +196,7 @@ The JSON response from the chatbot engine:
 
 
 <h2>CARL Source</h2>
-Here is the example for sending the resquest of intervention.
+Here is the example for sending the resquest of intervention. But the computer which has the rights to call APIs of CAL Source can make it run.
 
 ```js
 var request = require('request'); // request sdk
