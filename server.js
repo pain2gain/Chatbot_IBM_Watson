@@ -12,7 +12,7 @@ const service = new AssistantV1({
   username: "apikey",
   /************************************************************************/
   //Fill your api_key and your url
-  iam_apikey: '#your_api_key',
+  iam_apikey: 'Rl_jKQLL-RHUatQmnQKVFz7gKFRD11cNjoSszVEPd5Ma',
   url: '#url_of_your_region '
   /*************************************************************************/
 });
