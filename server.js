@@ -37,6 +37,8 @@ const auth = "Basic " + new Buffer.from(username + ":" + password).toString("bas
           responseJson["data"]=jsonAll;
           console.log(responseJson);
           res.json(responseJson);
+        }).catch(error=>{
+          console.log(error);
         });
         })
       .catch(error => {
