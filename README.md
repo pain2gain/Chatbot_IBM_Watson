@@ -26,13 +26,13 @@ You can use Git or checkout with SVN using the web URL or download them directly
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/download_code.JPG)
 
-<h4>Apikey and workplace_id of IBM Watson:</h4>
+<h4>IBM Watson, Apikey,workplace_id and URL</h4>
 
 To finish your connection with the chatbot, you have to open the `server.js` to fill your `url, apikey,workplace_id` of your account.
  
 [Site official IBM Watson assistant](https://www.ibm.com/cloud/watson-assistant/), Click the `Get started free`, and login with your account.
 
-How to get the apikey and workplace_id from your IBM watson assistant account: 
+**How to** get the apikey and workplace_id from your IBM watson assistant account:
 
 View API details: 
 
@@ -40,7 +40,7 @@ View API details:
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
 
-URL depends on your region:
+**URL depends on your region:** (In France we use the "https://gateway-lon.watsonplatform.net/assistant/api")
 
 ```
  Dallas: https://gateway.watsonplatform.net/assistant/api
@@ -62,7 +62,7 @@ URL depends on your region:
 
     Enter `node server.js`
 
-* In your browser, 
+* Then in your browser, 
 
     Enter `localhost:3001`
 
