@@ -128,20 +128,19 @@
 
      // list of address found 地址搜索匹配可能結果（列表）
      var autocompleteService;
-     //地址模糊匹配地理界限範圍
+     // the bounds of address matched 地址模糊匹配地理界限範圍
      var bounds;
-     //地區消息
+     // info of region 地區消息
      var infowindow;
-     //地址id解析器
+     // parser of address ID 地址id解析器
      var geocoder;
-     //定位標記
+     // marker of positioning定位標記
      var goDoorMarker;
      var posiontShow = 30;
 
      var pageObj = {
-
          fn: {
-             //地址輸入搜索可能結果匹配（結果為列表）
+             //With the input address, match the addresse possible 地址輸入搜索可能結果匹配（結果為列表）
              AutocompleteSearch: function () {
                  var address = document.getElementById('txtAutoCompute').value;
                  console.log(address);
@@ -170,16 +169,14 @@
                      document.getElementById("autoSearchPlace").innerHTML = htmlArr.join('');
                  };
                  var request = {
-                     //地址模糊匹配地理界限範圍
-                     //如果定位成功，則首選匹配查詢結果在此城市中
+                     //the bound of the search 地址模糊匹配地理界限範圍
+                     //If positiong seccessed, match the address in the city如果定位成功，則首選匹配查詢結果在此城市中
                      bounds: bounds,
                      input: address,
-                     //types: ['geocode']
                  }
                  autocompleteService.getPlacePredictions(request, displaySuggestions);
-                 //autocompleteService.getQueryPredictions(request, displaySuggestions);
              }
-             //獲取當前位置定位
+             //get the current positiong 獲取當前位置定位
              , getPosition: function () {
                  if (!navigator.geolocation) {
                      alert("Cannot support html5 postioning");
@@ -187,12 +184,12 @@
                  }
                  var options =
                      {
-                         enableHighAccuracy: true,//高精度定位
-                         timeout: 3000,//毫秒，超時時間,超時后調用error
+                         enableHighAccuracy: true,//high accuracy
+                         timeout: 3000,//milleSecond , timeout
                          maximumAge: 0
                      };
                  navigator.geolocation.getCurrentPosition(function (position) {
-                     console.log('當前定位：');
+                     console.log('Current positiong:');
                      console.log(position);
                      var geolocation = {
                          lat: position.coords.latitude,
@@ -203,14 +200,12 @@
                          radius: position.coords.accuracy
                      });
                      //pageObj.fn.goMapToByPlaceId(position.placeId);
-                     //設置查詢地圖範圍界限
+                     //the setting of the search bounds 設置查詢地圖範圍界限
                      bounds = circle.getBounds();
-                     //console.log(circle);
-                     console.log("定位設置成功");
-                     //pageObj.fn.alertMsg("定位設置成功");
+                     console.log("The postioning setting: success");
                      pageObj.fn.getCityName(geolocation);
                  }, function (error) {
-                     //处理错误
+                     //handle the errors 处理错误
                      switch (error.code) {
                          case 1:
                              console.log("Location service rejected");
@@ -231,7 +226,7 @@
                      }
                  }, options);
              }
-             //根據地址id轉換為地圖坐標
+             //according to the address id, get the coordinate in map 根據地址id轉換為地圖坐標
              , goMapToByPlaceId: function (placeId) {
                  geocoder.geocode({ 'placeId': placeId }, function (results, status) {
                      if (status === 'OK') {
@@ -255,12 +250,12 @@
                      }
                  });
              }
-             //根據經緯度坐標得到城市名稱
+             //according to the latitude and longitude, get the name of city 根據經緯度坐標得到城市名稱
              , getCityName: function (latlng) {
                  geocoder.geocode({ 'location': latlng }, function (results, status) {
                      if (status === 'OK') {
                          console.log(results);
-                         //獲取區縣名稱，匹配數據找出區縣id
+                         //get the name of region, match the ID獲取區縣名稱，匹配數據找出區縣id
                          var quxian = results.find(w => w.types.filter(x => x == "sublocality_level_1").length > 0);
                          if (quxian != undefined) {
                              var quxianObj = quxian.address_components.find(w => w.types.filter(x => x == "sublocality_level_1").length > 0);
@@ -276,7 +271,7 @@
                         $("#autoSearchPlace").html(name);
                          console.log("定位地址：");
                          console.log(firstResult);
-                         //顯示定位標記
+                         // show the marquer 顯示定位標記
                          goDoorMarker = new google.maps.Marker({
                              map: map,
                              position: latlng
@@ -291,7 +286,7 @@
                      }
                  });
              }
-             //顯示白色消息框到地圖
+             //make the address show in the map 顯示白色消息框到地圖
              , showMapInfo: function (msg, marker) {
                  infowindow.setContent(msg);
                  if (marker != null && marker != undefined) {
@@ -300,7 +295,7 @@
                      infowindow.open(map);
                  }
              }
-             //彈消息框自動消失
+             //Message Box disappear 彈消息框自動消失
              , alertMsg: function (msg) {
                  posiontShow = posiontShow + 5;
                  if (posiontShow > 60) {
@@ -321,10 +316,10 @@
                      dom.parentNode.removeChild(dom);
                  }, 2000);
              }
-             //fn結束
+             //fn end
          }
 
-         //pageObj 結束
+         //pageObj end
      };
 
      function initMap() {
@@ -339,9 +334,9 @@
              fullscreenControl: false
          });
          infowindow = new google.maps.InfoWindow;
-         //地址id轉換為坐標
+         //Transform the address ID into coordinate 地址id轉換為坐標
          geocoder = new google.maps.Geocoder;
-         //地址搜索匹配多個結果
+         //results of address matched 地址搜索匹配多個結果
          autocompleteService = new google.maps.places.AutocompleteService();
          pageObj.fn.getPosition();
      }
@@ -361,7 +356,7 @@
            if (status === 'OK') {
                var resultPosition = results[0];
                console.log(resultPosition.geometry.viewport);
-               console.log("定位地址：");
+               console.log("Positioning address：");
                console.log(resultPosition);
                console.log(resultPosition.geometry.viewport);
                $("#iconLocation").after('<code id="latitude">'+resultPosition.geometry.viewport.da.g+'</code>');
@@ -385,6 +380,9 @@
      });
 
  </script>
- <script src="http://maps.google.cn/maps/api/js?key=AIzaSyAcUbZlPh6ccA-zwtw_qHQnVGFoGY8z34M&libraries=places&callback=initMap" async defer></script>
+ <script src="http://maps.google.cn/maps/api/js?key=AIzaSyAcUbZlPh6ccA-zwtw_qHQnVGFoGY8z34M&libraries=places&callback=initMap" async defer>
+ //AIzaSyAcUbZlPh6ccA-zwtw_qHQnVGFoGY8z34M is the keyword of Google map
+ </script>
+
 
 </html>

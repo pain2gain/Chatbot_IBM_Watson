@@ -40,7 +40,7 @@ View API details:
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/watson_apikey2.png)
 
-**URL depends on your region:** (In France we use the "https://gateway-lon.watsonplatform.net/assistant/api")
+**URL depends on your region:** (In France we use the "https://gateway-fra.watsonplatform.net/assistant/api")
 
 ```
  Dallas: https://gateway.watsonplatform.net/assistant/api

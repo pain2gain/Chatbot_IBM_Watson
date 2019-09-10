@@ -1,9 +1,20 @@
  /*
-
+The javascript file is designed for the CARL chatbot
+  Principal Function:
+    1.realize the complete dialogue between users and chatbot
+    2.send the intervention request to backend
+    3.animation interaction
   */
 
 
 var getTime = function(){
+  /**
+    The function can return the real time for user's conversation
+    input:
+      null
+    output:
+      1. time =>the real time with the format of hours:minutes
+  **/
     var myDate = new Date();
     var hour = myDate.getHours();
     var minutes = myDate.getMinutes();
@@ -12,6 +23,14 @@ var getTime = function(){
 
 
 function userText(text,time){
+  /**
+    The function shows the users' sentences with the real time in the interface
+    input:
+      1. text => users' sentence
+      2. time => the delay time to show in the interface
+    output:
+      null
+  **/
   $('#parentUl').append('<li class="user">'+'<p>' + text +'</p>'+'<time>'+getTime()+'</time>'+'</li>');
   $("ul li:last-child").hide();
   $("ul li:last-child").fadeIn({ duration:time });
@@ -19,6 +38,14 @@ function userText(text,time){
 }
 
 function botText(text,time){
+  /**
+    The function shows the chatbot's sentences in the interface
+    input:
+      1. text => chatbot's sentence
+      2. time => the delay time to show in the interface
+    output:
+      null
+  **/
   $('#parentUl').append('<li class="robot">'+'<p class ="loader">' +'</p>'+'</li>');
   $('#parentUl')[0].scrollTop = $('#parentUl')[0].scrollHeight;
   setTimeout( function(){
@@ -31,6 +58,14 @@ function botText(text,time){
 }
 
 function botOthers(html,time){
+  /**
+    The function shows the animation interaction in the interface
+    input:
+      1. text => the html code which can realize the interaction
+      2. time => the delay time to show in the interface
+    output:
+      null
+  **/
   $('#parentUl').append('<li class="robot">'+'<p class ="loader">' +'</p>'+'</li>');
   $('#parentUl')[0].scrollTop = $('#parentUl')[0].scrollHeight;
   setTimeout( function(){
@@ -43,6 +78,15 @@ function botOthers(html,time){
 }
 
 function httpMsg(){
+  /**
+    The function will get the uses' descriptions , send them to the backend,
+    show them in the interface
+    input:
+      null
+    output:
+      null
+  **/
+
   var userMsg = document.getElementById("msg").value;
   if( $('#priorityTable').length){
   }
@@ -54,10 +98,19 @@ function httpMsg(){
 }
 
 
-function findEntity(entity,data){
+function findEntity(entityType,data){
+  /**
+    The function can get the list of the entities found
+    input:
+      1. entityType=> the type of entities "equipment" "symptom" "model"...
+      2. data=> the Json response of chatbot
+    output:
+      1. array=> with the type, return the list of the entities found
+  **/
+
   var array = new Array();
   for(j=0;j<data.entities.length;j++){
-    if(data.entities[j].entity == entity){
+    if(data.entities[j].entity == entityType){
       array[j] = data.entities[j].value;
     }
   }
@@ -66,27 +119,45 @@ function findEntity(entity,data){
 
 
 
-function judgePrompot(name,tag,data){
-  if(findEntity(name,data).length==1){
-    if(name=="equipment"){
-      showCards(findEntity(name,data),data);
+function judgePrompot(entityType,tag,data){
+  /**
+    The function can judge the situation of the dialogue, and give the propot
+    sentences to users
+    input:
+      1. entityType=> the type of entities "equipment" "symptom" "model"...
+      2. data=> the Json response of chatbot
+      3. tag=> the tag id of the entities "#equipment" "#symptom"
+    output:
+      null
+  **/
+  if(findEntity(entityType,data).length==1){
+    if(entityType=="equipment"){
+      showCards(findEntity(entityType,data),data);
     }else{
       $(tag).css("background-color","yellow");
-      $(tag).html(findEntity(name,data));
+      $(tag).html(findEntity(entityType,data));
       $(tag).attr("disabled","true");
       $(".dropdown-content a").remove();
     }
   }
-  else if(findEntity(name,data).length<=12 && findEntity(name,data).length>1) {
-    showCards(findEntity(name,data),data);
+  else if(findEntity(entityType,data).length<=12 && findEntity(entityType,data).length>1) {
+    showCards(findEntity(entityType,data),data);
   }
-  else if(findEntity(name,data).length>12){
+  else if(findEntity(entityType,data).length>12){
     botText("Votre description sur matériels est vague, re-décrivez ou faites la commentaire s'il vous plait.",600);
       botOthers('<button class="ui-corner-all" id="commentEqpt" onclick="commentEqpt()">Commentaire?</button>',800);
   }
 }
 
 function judgeData(data){
+  /**
+    The function will find the enities from the chatbot Json response, and according to
+    the entities found, it will give them to fincEntity(), judgePrompot()
+    input:
+      1. data=> the Json response of chatbot
+    output:
+      null
+  **/
   var array = new Array();
   // (0 symptom)   (1 equipment)  (2 location) (3 eqptType) (4 model) (5 brand) (6 adjectifsPossessifs)
   array[0] = findEntity("symptom",data).length;
@@ -113,18 +184,35 @@ function judgeData(data){
 
 
 function judgeApi(data,array){
-  if(array[2]>0){//有localisation
+  /**
+    The function will cal the API to get details from the CARL Source,
+    but we will not use the function because of the absence of CS API
+    input:
+      1. data=> the Json response of chatbot
+      2. array=> with the type, the list of the entities found
+    output:
+      null
+  **/
+  if(array[2]>0){//when we get entities of localisation
     //callApi(data);
-  }else if (array[2]==0 && array[3]>0) {//有eqptType
+  }else if (array[2]==0 && array[3]>0) {//when we get entities of eqptType
     //callApi(data);
-  }else if(array[2]==0 && array[3]==0 && array[4]>0){//有model
+  }else if(array[2]==0 && array[3]==0 && array[4]>0){//when we get entities of model
     //callApi(data);
-  }else if (array[2]==0 && array[3]==0 && array[4]==0 && array[5]>0){//有brand
+  }else if (array[2]==0 && array[3]==0 && array[4]==0 && array[5]>0){//when we get entities of brand
     //callApi(data);
   }
 }
 
 function prompot(data){
+  /**
+    The function can show the response sentence from the chatbot,
+    and add the button of comment
+    input:
+      1. data=> the Json response of chatbot
+    output:
+      null
+  **/
   if(data.output.text !=""){
   $('#parentUl').append('<li class="robot">'+'<img class="robotIcon"  src="./photo/icon1.png">'+'<p class="robotText">'+data.output.text +'</p>'+'</li>');
   $('#parentUl')[0].scrollTop = $('#parentUl')[0].scrollHeight;
@@ -144,6 +232,15 @@ function prompot(data){
 
 
 function ajaxSend(userMsg) {
+  /**
+    The function is designed for sending the users' descriptions to the backend,
+    and getting the chatbot's response
+    Ajax http request
+    input:
+      1. userMsg=> users' message/description
+    output:
+      null
+  **/
     $.ajax({
 		url: '/sendMsg',
 		type: 'post',
@@ -175,15 +272,38 @@ function ajaxSend(userMsg) {
 	});
 }
 
+
+
 descriptionSE=null;
 function descriptionDI(data){
+  /**
+    With the global variable "descriptionSE", the function can judge that if users' descriptions
+     contain the entities of location or equipment, if yes make the description
+     as the title of the request
+    input:
+      1. data=> the Json response of chatbot
+    output:
+      null
+  **/
   if(findEntity("equipment",data).length>0 ||findEntity("#location",data).length>0){
     descriptionSE = data.input.text;
   }
 }
 
 function priority(){
-/* ffff00 ffcc00 ff9900 ff6600 ff0000*/
+  /**
+    The function is designed for the table of priority, it will show 10 buttons which
+    present the different levels of the problem
+    1,2 SECOND
+    3,4 NORMAL
+    5,6 HIGH
+    7,8 VERYHIGH
+    9,10 URGENT
+    input:
+      null
+    output:
+      null
+  **/
     userText("priorité",400);
     var html ='<li class="robot" id="priorityTable">'+
               '<button class="ui-btn ui-btn-inline ui-corner-all"id="number" style="background-color:#ffff00"onclick="buttonPriority(this.innerHTML)">1</button>'+
@@ -251,12 +371,27 @@ function buttonPriority(number){
   }
 /***********************************************************************************/
 function commentEqpt(){
+  /**
+    Add the comment function for filling in equipment
+    input:
+      null
+    output:
+      null
+  **/
   $("[id=commentSymp]").attr("disabled","true");
   $("[id=commentEqptSymp]").attr("disabled",true);
   $("[id=commentEqpt]").attr("disabled",true);
   botOthers('<textarea id="eqptText" placeholder="Vous n\'avez pas trouvé: Ecrivez alors votre commentaire"></textarea> <button class="ui-corner-all" id="buttonConEqpt" onclick="eqptConfirmer()">Confirmer</button> <button class="ui-corner-all"  id="buttonAnnEqpt" onclick="eqptAnnuler()">Annuler</button>',500);
 }
 function eqptConfirmer(){
+  /**
+    Add the comment function for filling in equipment
+    button confirm
+    input:
+      null
+    output:
+      null
+  **/
   if($("#eqptText").val()==""){
     alert("Remplissez votre commentaire!!!");
   }else{
@@ -276,6 +411,14 @@ function eqptConfirmer(){
     }
 }
 function eqptAnnuler(){
+  /**
+    Add the comment function for filling in equipment
+    button cancelqueding
+    input:
+      null
+    output:
+      null
+  **/
   $("#buttonConEqpt").css("display","none");
   $("#buttonAnnEqpt").css("display","none");
   $("#eqptText").css("display","none");
@@ -284,12 +427,27 @@ function eqptAnnuler(){
 /***************************************************************************/
 
 function commentSymp(){
+  /**
+    Add the comment function for filling in symptom
+    input:
+      null
+    output:
+      null
+  **/
   $("[id=commentSymp]").attr("disabled","true");
   $("[id=commentEqptSymp]").attr("disabled",true);
   $("[id=commentEqpt]").attr("disabled",true);
   botOthers('<textarea id="sympText" placeholder="Ne tourvez pas? Ecrivez votre commentaire"></textarea> <button class="ui-corner-all" id="buttonConSymp" onclick="sympConfirmer()">Confirmer</button> <button class="ui-corner-all" id="buttonAnnSymp" onclick="sympAnnuler()">Annuler</button>',500);
 }
 function sympConfirmer(){
+  /**
+    Add the comment function for filling in symptom
+    button confirm
+    input:
+      null
+    output:
+      null
+  **/
   if($("#sympText").val()==""){
     alert("Remplissez votre commentaire!!!");
   }else{
@@ -310,6 +468,14 @@ function sympConfirmer(){
     }
 }
 function sympAnnuler(){
+  /**
+    Add the comment function for filling in symptom
+    button cancel
+    input:
+      null
+    output:
+      null
+  **/
   $("#buttonConSymp").css("display","none");
   $("#buttonAnnSymp").css("display","none");
   $("#sympText").css("display","none");
@@ -318,6 +484,13 @@ function sympAnnuler(){
 
 /**************************************************************************/
 function commentEqptSymp(){
+  /**
+    Add the comment function for filling in symptom and equipemnt
+    input:
+      null
+    output:
+      null
+  **/
   $("[id=commentSymp]").attr("disabled","true");
   $("[id=commentEqptSymp]").attr("disabled",true);
   $("[id=commentEqpt]").attr("disabled",true);
@@ -325,6 +498,14 @@ function commentEqptSymp(){
 }
 
 function eqptSympConfirmer(){
+  /**
+    Add the comment function for filling in symptom and equipemnt
+    button confirm
+    input:
+      null
+    output:
+      null
+  **/
   if($("#eqptText2").val()==""||$("#sympText2").val()==""){
     alert("Remplissez votre commentaire!!!");
   }else{
@@ -352,6 +533,14 @@ function eqptSympConfirmer(){
     }
 }
 function eqptSympAnnuler(){
+  /**
+    Add the comment function for filling in symptom and equipemnt
+    button cancel
+    input:
+      null
+    output:
+      null
+  **/
   $("[id=buttonConEqptSymp]").css("display","none");
   $("[id=buttonAnnEqptSymp]").css("display","none");
   $("[id=eqptText2]").css("display","none");
@@ -360,7 +549,17 @@ function eqptSympAnnuler(){
 }
 
 /**************************************************************************/
+
+
+
 function responseFromButton(){
+  /**
+    The function is designed for the different responses according to the different situations
+    input:
+      null
+    output:
+      null
+  **/
   if($('#symptom').prop("disabled")==false && $('#equipment').prop("disabled")==false && $('#location').prop("disabled")==false){
     botText("Décrivez le symptôme de votre problème et le matériel ou votre localisation.",150);
     botOthers('<button class="ui-corner-all"  id="commentEqptSymp" onclick="commentEqptSymp()">Commentaire?</button>',200);
@@ -391,6 +590,14 @@ function responseFromButton(){
 
 
 function showCards(array, data){
+  /**
+    The function can realize showing the equipment or location cards in the interface
+    input:
+      1. array=> the list of the entities
+      2. data=> the Json response from the chatbot
+    output:
+      null
+  **/
     var html = '<li id="cards">';
       for(i=0;i<array.length;i++){
         html +=   '<div class="cardBox">'+
@@ -445,15 +652,30 @@ function showCards(array, data){
       }
 
 
-/*function symptom(){
-    responseFromButton();
-  }*/
 
 function equipment(){
+  /**
+    When users click the button of equipment, we will call the Function responseFromButton()
+    for showing the responses to users
+    input:
+      null
+    output:
+      null
+  **/
     responseFromButton();
   }
 
 function buttonConfirmer(id,type,code){
+  /**
+    When the users click the button of confirm, the function will be active for
+    getting the equipment or location information
+    input:
+      1. id => the equipment ID
+      2. type => the type of the entities  "equipment" or "location"\
+      3. code => the code of the entities
+    output:
+      null
+  **/
   $("[id=confirmer]").attr("disabled","true");
   $("#suivant").attr("disabled","true");
   $("#incorrect").attr("disabled","true");
@@ -523,11 +745,26 @@ function buttonLeftRight(){
 }
 
 function annulerDI(){
+  /**
+    when the cancel button of request is clicked, we will refresh the apge
+    input:
+      null
+    output:
+      null
+  **/
   window.location.reload();
 }
 
 
 function prepareJson(){
+  /**
+    The function is for preparing the json file who will be sent to backend as
+    the intervention request
+    input:
+      null
+    output:
+      1. jsonDatas=> the json which contains the necessary information
+  **/
   var symp = null;
   var sympComment=null;
   var eqpt = null;
@@ -627,6 +864,13 @@ function prepareJson(){
 
 
 function envoyerDI(){
+  /**
+    the function is designed for sending the intervention request with Ajax http request
+    input:
+      null
+    output:
+      null
+  **/
   var jsonDatas = prepareJson();
   $.ajax({
   url: '/sendDI',
@@ -661,26 +905,65 @@ function envoyerDI(){
 }
 
 function funNoCreated(){
+  /**
+    show the cry face to tell them the functions which cannot be realized
+    input:
+      null
+    output:
+      null
+  **/
   $("#choiceWindow").slideDown("normal");
   $("#backGround").show();
 }
+
+
 function iconXMap(){
+  /**
+    The X icon for hiding the cry face page
+    input:
+      null
+    output:
+      null
+  **/
   $("#boxDisplay").hide();
   $("#backGroundMap").hide();
 }
 
+
 function iconLocation(){
+  /**
+    When users click the Location Icon of the confirmation table, the interface
+    will show the google map
+    input:
+      null
+    output:
+      null
+  **/
   $("#boxDisplay").show();
   $("#backGroundMap").show();
 }
 
 
 function iconX(){
+  /**
+    The X icon for hiding the google map page
+    input:
+      null
+    output:
+      null
+  **/
   $("#choiceWindow").hide();
   $("#backGround").hide();
 }
 
 function confirmationPanelShow(){
+  /**
+    The fucntion shows the confirmation table
+    input:
+      null
+    output:
+      null
+  **/
 
   var html = '<li id="confirmationPanel">'+
                 '<div id="titre">Vérifiez les informations de commande</div>'+
@@ -733,23 +1016,17 @@ function confirmationPanelShow(){
 
 }
 
-function callApi(data){
-  if (findEntity("model", data).length>0){
-    botText("Call API....model");
-  }
-  if(findEntity("location",data).length>0){
-    botText("Call API....location");
-  }
-  if(findEntity("eqptType", data).length>0){
-    botText("Call API....eqptType");
-  }
-  if(findEntity("brand", data).length>0){
-    botText("Call API....brand");
-  }
-}
 
+/************************************************************************************************************/
 
 function F_Open_dialog(){
+  /**
+    When the users click the photo icon, the function can make users choose the photo
+    input:
+      null
+    output:
+      null
+  **/
   document.getElementById("btn_file").click();
   $("#btn_file").change(function(){
     var objUrl = getObjectURL(this.files[0]) ;
@@ -764,6 +1041,13 @@ function F_Open_dialog(){
 }
 
 function getObjectURL(file){
+  /**
+    With the photo selected, get its URL
+    input:
+      1. file=> file object
+    output:
+      1. url=> the url of the photo selected
+  **/
     var url = null ;
     if (window.createObjectURL!=undefined)
     { // basic
@@ -782,6 +1066,13 @@ function getObjectURL(file){
 }
 
 function incorrectButton(){
+  /**
+    When the users click the incorrect button, we will show them the comment textarea
+    input:
+      null
+    output:
+      null
+  **/
   $("[id=confirmer]").attr("disabled","true");
   $("#suivant").attr("disabled","true");
   $("#incorrect").attr("disabled","true");
@@ -791,16 +1082,38 @@ function incorrectButton(){
 
 
 function deleteLocation(){
+  /**
+    Cancel the location selected
+    input:
+      null
+    output:
+      null
+  **/
   $("#latitude").hide();
   $("#longitude").hide();
   $("#nameLocation").remove();
   $("#deleteLocation").remove();
 }
 function deletePhoto(){
+  /**
+    Cancel the photo selected
+    input:
+      null
+    output:
+      null
+  **/
   $("#img0").remove();
   $("#deletePhoto").remove();
 }
 function clickSymptom(symptom){
+  /**
+    When users click the symptom of the button "Symptôme", and choose the correct
+    symptome, the function will note it
+    input:
+      1. symptom=> thee symptom "ALARME", "BRUIT ANORMAL", "ALERTE"...
+    output:
+      null
+  **/
   $("#symptom").css("background-color","yellow");
   $("#symptom").html(symptom);
   $("#symptom").attr("disabled","true");
