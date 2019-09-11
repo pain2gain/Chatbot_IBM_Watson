@@ -228,7 +228,7 @@ var json = {                      // the json will be sent to CARL Source system
 
 **Functions no realized**
 
-* Lacking info of photo, location
+* Lacking information of photo, location
 
 
 ****
@@ -244,5 +244,4 @@ entities' descriptions.
 
 **Tips:**
 
-The SDK used for processing the descriptions od entities is from [Apache POI](https://poi.apache.org).
-It's a SDK for Microsoft Documents.
+The jar packages for processing the excel documents are from [Apache POI](https://poi.apache.org). They are used for Microsoft Documents.
