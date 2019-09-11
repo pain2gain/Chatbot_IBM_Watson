@@ -239,7 +239,7 @@ var json = {                      // the json will be sent to CARL Source system
  Like the following picture:
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/decompose_description.png)
 
-The file named entities contains a Java small programme with can realize the decomposition and composition of the 
+The file named entities contains a Java small programme which can realize the decomposition and composition of the 
 entities' descriptions.
 
 **Tips:**
