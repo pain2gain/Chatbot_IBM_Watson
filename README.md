@@ -1,8 +1,6 @@
 <h1>Chatbot based on IBM Watson Assistant</h1>
 
-
 <h2>Introduction</h2>
-
 The program is a Chatbot project based on the engine of [IBM Watson Assistant](https://www.ibm.com/cloud/watson-assistant/). It is a simple demo of my internship at [CARL Software](https://www.carl-software.fr/) for six months.
 It just has a French version, but the engine of IBM Watson supports many [languages](https://cloud.ibm.com/docs/services/assistant?topic=assistant-language-support). The system depends also on the CARL Source for getting the entities and sending the request of intervention.
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/architeture.png)
@@ -10,9 +8,7 @@ It just has a French version, but the engine of IBM Watson supports many [langua
 The frame diagram shows us the overview of the system.
 
 <h2>Installation</h2>
-
 <h4>Server environment:</h4>
-
 1. Download [Node.js](https://nodejs.org/en/) and install Nodejs in your computer environment.
 2. Npm which is the package management system for Node.js has been integrated. So Node-SDK IBM Watson can be downloaded directly with the `npm install ibm-watson` in CMD. 
 3. The same for SDK Express `npm install express` in CMD.
@@ -20,16 +16,14 @@ The frame diagram shows us the overview of the system.
 
 
 <h4>Download code:</h4>
-
 You can use Git or checkout with SVN using the web URL or download them directly.
 
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/download_code.JPG)
 
 <h4>IBM Watson, Apikey,workplace_id and URL</h4>
-
 To finish your connection with the chatbot, you have to open the `server.js` to fill your `url, apikey,workplace_id` of your account.
- 
+
 [Site official IBM Watson assistant](https://www.ibm.com/cloud/watson-assistant/), Click the `Get started free`, and login with your account.
 
 **How to** get the apikey and workplace_id from your IBM watson assistant account:
@@ -57,7 +51,6 @@ View API details:
 ```
 
 <h2>To run</h2>
-
 * In CMD of your computer, get into the file which has these code: 
 
     Enter `node server.js`
@@ -68,7 +61,6 @@ View API details:
 
 
 <h2>Tips</h2>
-
 * The demo chatbot is designed in the environment of Chrome browser. So maybe the other environment can not be supported very well.
 
 * The computer which will run the application must has the rights to call the API of CARL Source. If not it has always "Error".
@@ -111,23 +103,22 @@ Now here the REST api we get from the CS:
 Manually, we downloaded the data from CARL Source to get the entities of 'Equipement', 'Localisation', 'TypeEQPT', 'Marque', 'Symptômr', 'Modèle' and process these data.
 
 <h2>Watson Assistant initialisation</h2>
-
 * <h4>Entities</h4>
 
 The CSV file format for eneities:
 
     entity1, value_a, A_synonym_1
-
-    entity1, value_b, B_synonym_1, B_synonym_2
-
-    entity2, value_c, C_synonym_1, C_synonym_2, C_synonym_3
     
+    entity1, value_b, B_synonym_1, B_synonym_2
+    
+    entity2, value_c, C_synonym_1, C_synonym_2, C_synonym_3
+
 Example:
 
     equipement, 01785, Poteau Incendie Emeraude DN100, PI-EMERAUDE-100, Poteau Incendie Emeraude DN100
     
     equipement, B1001, Bus Standard 1001, CITELIS-12, Bus Citelis 12, Bus, TRG01010305, TR02010102, IRISBUS
-
+    
     equipement, CLIM-001, Climatiseur 001, Climatiseur Carrier 50TZ, TRG0101010302, TR01010204, CARRIER
 
 ![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/import_entities.png)
@@ -163,7 +154,6 @@ then it will check the entities in the user's description. We can also choose th
 
 
 <h2>Watson API</h2>
-
 With the [API of Watson Assistant](https://cloud.ibm.com/apidocs/assistant?code=node), we can send the message to chatbot engine.
 Now the IBM watson has 2 versions API, the V1 is used by the system. We need also to find the apikey,workspace_id, and url.
 
@@ -198,7 +188,7 @@ The JSON response from the chatbot engine:
 <h2>CARL Source</h2>
 Here is the example for sending the resquest of intervention. But the computer which has the rights to call APIs of CAL Source can make it run.
 
-```js
+```
 var request = require('request'); // request sdk
 var json = {                      // the json will be sent to CARL Source system  
         data: {
@@ -231,3 +221,28 @@ var json = {                      // the json will be sent to CARL Source system
    function (error, response, body) {
    });
 ```
+
+**Functions realized** 
+
+* Send a request with equipment, symptom, latitude and longitude
+
+**Functions no realized**
+
+* Lacking info of photo, location
+
+
+****
+
+## Decompose descriptions
+
+ Before sending the entities and their synonyms to the chatbot engine, the synonyms processing is necessary.
+ Like the following picture:
+![image](https://github.com/pain2gain/Chatbot_IBM_Watson/raw/master/images/decompose_description.png)
+
+The file named entities contains a Java small programme with can realize the decomposition and composition of the 
+entities' descriptions.
+
+**Tips:**
+
+The SDK used for processing the descriptions od entities is from [Apache POI](https://poi.apache.org).
+It's a SDK for Microsoft Documents.
