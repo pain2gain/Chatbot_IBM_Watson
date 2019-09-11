@@ -14,14 +14,14 @@ const AssistantV1 = require('ibm-watson/assistant/v1');
 const service = new AssistantV1({
   version: '2019-02-28',
   username: "apikey",
-  iam_apikey: 'pcvYiiqZJfNybunAe3hgensVK2W8KWULc2wbJ3NQFX1a', // fill in your APIKey
+  iam_apikey: '#your_api_key', // fill in your APIKey
   url: 'https://gateway-fra.watsonplatform.net/assistant/api'  // fill in your URL, in France https://gateway-lon.watsonplatform.net/assistant/api
 });
 
 app.post('/sendMsg',function(req,res,err){
   console.log("Msg: "+req.body.jsonDatas);
   service.message({                       // Send the Msg to the chatbot, according the API of IBM Watson
-  workspace_id: '0ccb537a-4f1a-40f2-aa79-cd2d3a2141e8',   // Fill your workplace_id
+  workspace_id: '#your_workplace_id',   // Fill your workplace_id
   input: {'text': req.body.jsonDatas}
   }).then(response => {
       var responseJson = JSON.parse(JSON.stringify(response, null, 2));
